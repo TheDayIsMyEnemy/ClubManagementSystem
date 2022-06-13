@@ -1,0 +1,73 @@
+﻿@page "/members"
+@inherits MembersBase
+
+<PageTitle>Members</PageTitle>
+
+<MudTable Items="Members"
+          Hover="true"
+          Filter="new Func<Member, bool>(Filter)"
+          Loading="IsLoading">
+    <ToolBarContent>
+        <MudFab StartIcon="@Icons.Filled.PersonAdd"
+                Color="Color.Primary"
+                Size="Size.Small"
+                Class="fab"
+                OnClick="CreateMember" />
+        <MudSpacer />
+        <MudTextField @bind-Value="SearchQuery"
+                      Placeholder="Search"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      IconSize="Size.Small"
+                      Class="mt-0" />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>First Name</MudTh>
+        <MudTh>Last Name</MudTh>
+        <MudTh>Birth Date</MudTh>
+        <MudTh>Phone No.</MudTh>
+        <MudTh>Status</MudTh>
+        <MudTh>Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="First Name">@context.FirstName</MudTd>
+        <MudTd DataLabel="Last Name">@context.LastName</MudTd>
+        <MudTd DataLabel="Birth Date">@context.BirthDate?.ToShortDateString()</MudTd>
+        <MudTd DataLabel="Phone No.">@context.PhoneNumber</MudTd>
+        <MudTd DataLabel="Status">
+            <MudTooltip Placement="Placement.Top" Text="@context.Membership?.EndDate.ToShortDateString()">
+                @if (context.Membership != null)
+                {
+                    <MudChip Variant="Variant.Outlined"
+                         Color="@(context.Membership.IsActive? Color.Primary : Color.Secondary)">
+                        @(context.Membership.IsActive ? "Active" : "Expired")
+                    </MudChip>
+                }
+            </MudTooltip>
+        </MudTd>
+        <MudTd DataLabel="Actions">
+            <MudStack Row="true">
+                <MudTooltip Placement="Placement.Top" Text="Edit">
+                    <MudIconButton Icon="@Icons.Filled.Edit"
+                                   Color="Color.Primary"
+                                   Size="Size.Small"
+                                   OnClick="(e) => EditMember(context)">
+                    </MudIconButton>
+                </MudTooltip>
+                <MudTooltip Placement="Placement.Top" Text="Delete">
+                    <MudIconButton Icon="@Icons.Filled.Delete"
+                                   Color="Color.Error"
+                                   Size="Size.Small"
+                                   OnClick="(e) => DeleteMember(context)">
+                    </MudIconButton>
+                </MudTooltip>
+            </MudStack>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+
+

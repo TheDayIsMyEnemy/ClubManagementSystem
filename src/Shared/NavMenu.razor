@@ -1,0 +1,28 @@
+﻿<MudPaper Elevation="0">
+    <MudNavMenu Margin="Margin.Normal" Color="Color.Info">
+        <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Dashboard">
+            Dashboard
+        </MudNavLink>
+        <MudNavLink Href="members" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.PeopleAlt">
+            Members
+        </MudNavLink>
+        <MudNavLink Href="memberships" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.CardMembership">
+            Memberships
+        </MudNavLink>
+        <MudNavLink Href="groups" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.GroupWork">
+            Groups
+        </MudNavLink>
+        <MudNavLink Href="uploadMembers" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.CloudUpload">
+            Upload
+        </MudNavLink>
+        <MudNavLink Href="statistics" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.QueryStats">
+            Statistics
+        </MudNavLink>
+        <AuthorizeView Roles="@Roles.Admin">
+            <MudNavLink Href="accounts" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.ManageAccounts">
+                Accounts
+            </MudNavLink>
+        </AuthorizeView>
+    </MudNavMenu>
+</MudPaper>
+

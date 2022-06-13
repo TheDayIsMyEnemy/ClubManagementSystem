@@ -1,0 +1,114 @@
+﻿<MudDialog ClassActions="ma-4">
+    <DialogContent>
+        <MudForm @ref="_form" Class="px-2">
+            <MudStack Row="true">
+                <MudTextField T="string"
+                              Label="First Name"
+                              Required="true"
+                              RequiredError="The FirstName field is required!"
+                              @bind-Value="_member.FirstName" />
+                <MudTextField T="string"
+                              Label="Last Name"
+                              Required="true"
+                              RequiredError="The LastName field is required!"
+                              @bind-Value="_member.LastName" />
+            </MudStack>
+            <MudStack Row="true" Justify="Justify.Center" AlignItems="AlignItems.Center">
+                <MudDatePicker Label="Birth Date"
+                               @bind-Date="_member.BirthDate"
+                               DisableToolbar="true" />
+                <MudTextField T="string"
+                              Label="Phone No."
+                              @bind-Value="_member.PhoneNumber" />
+            </MudStack>
+            <MudRadioGroup T="Gender" @bind-SelectedOption="_member.Gender" Required="true" Class="my-4">
+                <MudRadio Option="Gender.Male" Color="Color.Primary">@Gender.Male</MudRadio>
+                <MudRadio Option="Gender.Female" Color="Color.Secondary">@Gender.Female</MudRadio>
+            </MudRadioGroup>
+            <MudSwitch T="bool"
+                       Checked="_showMembershipDetails"
+                       CheckedChanged="OnMembershipDetailsChecked"
+                       Color="Color.Primary"
+                       Class="ml-2">
+                Enable Membership
+            </MudSwitch>
+            <div style="@(_showMembershipDetails ? "" : "display: none;")">
+                <MudStack Row="true">
+                    <MudNumericField T="double"
+                                     Value="_member.Membership != null ? _member.Membership.Fee : 0"
+                                     ValueChanged="OnMembershipFeeChanged"
+                                     Label="Fee"
+                                     Variant="Variant.Text"
+                                     Min="20.0"
+                                     Max="500.0"
+                                     Style="width: 85px" />
+                    <MudDateRangePicker Label="Period Range"
+                                        DateRange="_membershipPeriod"
+                                        DateRangeChanged="OnMembershipPeriodChanged"
+                                        PickerVariant="PickerVariant.Dialog"
+                                        DisableToolbar="true" />
+                </MudStack>
+            </div>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Secondary" Variant="Variant.Filled" Size="Size.Small" OnClick="Cancel">
+            Cancel
+        </MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="Submit">
+            Submit
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private MudForm _form = null!;
+    private Member _member = new();
+    private bool _showMembershipDetails = false;
+    private DateRange _membershipPeriod = new DateRange(DateTime.Now, DateTime.Now.AddMonths(1));
+
+    [CascadingParameter]
+    private MudDialogInstance _mudDialog { get; set; } = null!;
+
+    private async Task Submit()
+    {
+        await _form.Validate();
+        if (_form.IsValid)
+        {
+            _mudDialog.Close(DialogResult.Ok(_member));
+        }
+    }
+
+    private void OnMembershipDetailsChecked(bool value)
+    {
+        _showMembershipDetails = value;
+        if (_showMembershipDetails)
+        {
+            _member.Membership = new Membership
+                {
+                    Fee = 20,
+                    StartDate = _membershipPeriod.Start!.Value,
+                    EndDate = _membershipPeriod.End!.Value
+                };
+        }
+        else
+        {
+            _member.Membership = null;
+        }
+    }
+
+    private void OnMembershipFeeChanged(double value)
+    {
+        if (_member.Membership != null)
+            _member.Membership.Fee = value;
+    }
+
+    private void OnMembershipPeriodChanged(DateRange membershipPeriod)
+    {
+        _membershipPeriod = membershipPeriod;
+        _member.Membership!.StartDate = membershipPeriod.Start!.Value;
+        _member.Membership!.EndDate = membershipPeriod.End!.Value;
+    }
+
+    private void Cancel() => _mudDialog.Cancel();
+}
