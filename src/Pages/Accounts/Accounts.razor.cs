@@ -66,7 +66,7 @@ namespace ClubManagementSystem.Pages.Accounts
                 var identityResult = await _userManager.CreateAsync(user, userAccount.Password);
                 if (identityResult.Succeeded)
                 {
-                    _snackbar.Add(string.Format(Constants.EntityCreatedMessageFormat, user.FirstName),
+                    _snackbar.Add(string.Format(Messages.SuccessfulCreationFormat, user.FirstName),
                         Severity.Success);
                     Users.Add(user);
                 }
@@ -99,7 +99,7 @@ namespace ClubManagementSystem.Pages.Accounts
                         _snackbar.Add(string.Join(Environment.NewLine,
                             identityResult.Errors.Select(e => e.Description)), Severity.Error);
                         return;
-                    }       
+                    }
                 }
                 if (rolesToAdd.Any())
                 {
@@ -111,9 +111,10 @@ namespace ClubManagementSystem.Pages.Accounts
                         return;
                     }
                 }
-                if (identityResult != null) {
-                    _snackbar.Add(string.Format(Constants.EntityUpdatedMessageFormat, user.FullName),
-                            Severity.Success);
+                if (identityResult != null)
+                {
+                    _snackbar.Add(string.Format(Messages.SuccessfulUpdateFormat, user.FullName),
+                        Severity.Success);
                 }
             }
         }
@@ -133,7 +134,7 @@ namespace ClubManagementSystem.Pages.Accounts
                 if (identityResult.Succeeded)
                 {
                     _snackbar.Add(
-                        string.Format(Constants.EntityDeletedMessageFormat, user.FullName),
+                        string.Format(Messages.SuccessfulDeletionFormat, user.FullName),
                         Severity.Success);
                     Users.Remove(user);
                 }

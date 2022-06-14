@@ -62,7 +62,7 @@ namespace ClubManagementSystem.Pages.UploadMembers
             }
             catch
             {
-                _snackBar.Add(Constants.DefaultErrorMessage, Severity.Error);
+                _snackBar.Add(Messages.Error, Severity.Error);
             }
 
             File = null;

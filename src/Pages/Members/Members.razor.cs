@@ -18,12 +18,12 @@ namespace ClubManagementSystem.Pages.Members
         private ISnackbar _snackbar { get; set; } = null!;
 
         protected List<Member> Members { get; set; } = new();
-        protected string? SearchQuery { get; set; } 
+        protected string? SearchQuery { get; set; }
         protected bool IsLoading { get; set; }
 
         private async Task LoadMembers()
         {
-            IsLoading = true; 
+            IsLoading = true;
             Members = await _memberService.GetAllMembers();
             IsLoading = false;
         }
@@ -59,11 +59,11 @@ namespace ClubManagementSystem.Pages.Members
                 var isCreated = await _memberService.CreateMember(member);
                 if (isCreated)
                 {
-                    _snackbar.Add(string.Format(Constants.EntityCreatedMessageFormat, member.FullName),
+                    _snackbar.Add(string.Format(Messages.SuccessfulCreationFormat, member.FullName),
                         Severity.Success);
                     Members.Add(member);
                 }
-                else { _snackbar.Add(Constants.DefaultErrorMessage, Severity.Error); }
+                else { _snackbar.Add(Messages.Error, Severity.Error); }
             }
         }
 
@@ -77,10 +77,10 @@ namespace ClubManagementSystem.Pages.Members
                 var isUpdated = await _memberService.UpdateMember(member);
                 if (isUpdated)
                 {
-                    _snackbar.Add(string.Format(Constants.EntityUpdatedMessageFormat, member.FullName),
+                    _snackbar.Add(string.Format(Messages.SuccessfulUpdateFormat, member.FullName),
                         Severity.Success);
                 }
-                else { _snackbar.Add(Constants.DefaultErrorMessage, Severity.Error); }
+                else { _snackbar.Add(Messages.Error, Severity.Error); }
             }
         }
 
@@ -98,12 +98,11 @@ namespace ClubManagementSystem.Pages.Members
                 var isDeleted = await _memberService.DeleteMember(member);
                 if (isDeleted)
                 {
-                    _snackbar.Add(
-                        string.Format(Constants.EntityDeletedMessageFormat, member.FullName),
+                    _snackbar.Add(string.Format(Messages.SuccessfulDeletionFormat, member.FullName),
                         Severity.Success);
                     Members.Remove(member);
                 }
-                else { _snackbar.Add(Constants.DefaultErrorMessage, Severity.Error); }
+                else { _snackbar.Add(Messages.Error, Severity.Error); }
             }
         }
 
