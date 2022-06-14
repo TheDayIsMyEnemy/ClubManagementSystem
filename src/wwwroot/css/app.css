@@ -21,4 +21,7 @@
     .mud-table-container {
         height: 270px;
     }
+    .search-field {
+        width: 100px;
+    }
 }
