@@ -18,11 +18,11 @@
         <MudNavLink Href="statistics" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.QueryStats">
             Statistics
         </MudNavLink>
-        <AuthorizeView Roles="@Roles.Admin">
+        @*<AuthorizeView Roles="@Roles.Admin">*@
             <MudNavLink Href="accounts" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.ManageAccounts">
                 Accounts
             </MudNavLink>
-        </AuthorizeView>
+        @*</AuthorizeView>*@
     </MudNavMenu>
 </MudPaper>
 
