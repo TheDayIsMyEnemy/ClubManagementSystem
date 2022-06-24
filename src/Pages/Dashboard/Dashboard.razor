@@ -1,4 +1,5 @@
 ﻿@page "/"
+@inherits DashboardBase
 
 <PageTitle>Dashboard</PageTitle>
 
@@ -8,7 +9,7 @@
             <MudIcon Icon="@Icons.Material.Filled.Euro" Color="Color.Primary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
             <div>
                 <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Total Income</MudText>
-                <MudText Typo="Typo.h5">125,000</MudText>
+                <MudText Typo="Typo.h5">@TotalIncome.ToString("f2")</MudText>
             </div>
         </MudPaper>
     </MudItem>
@@ -39,53 +40,63 @@
             </div>
         </MudPaper>
     </MudItem>
-    <MudItem xs="12" sm="8">
-        <MudPaper Class="pa-4" Style="height:420px;">
-            <MudChart ChartType="ChartType.Line" ChartSeries="@Series" XAxisLabels="@XAxisLabels" Width="100%" Height="350px"></MudChart>
-        </MudPaper>
-    </MudItem>
     <MudItem xs="12" sm="4">
-        <MudPaper Class="pa-4" Style="height:420px;">
-            <MudChart ChartType="ChartType.Donut" Width="300px" Height="300px" InputData="@data" InputLabels="@labels">
+        <MudPaper Class="pa-2">
+            <MudText Typo="Typo.h6" Align="Align.Left" GutterBottom="true" Class="ml-2">Memberships</MudText>
+            <MudChart ChartType="ChartType.Donut" Width="300px" Height="300px" InputData="@DonutData" InputLabels="@DonutLabels">
                 <CustomGraphics>
-                    <text class="donut-inner-text" x="47%" y="35%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="2">Total</text>
-                    <text class="donut-inner-text" x="47%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="5">@data.Sum().ToString()</text>
+                    <text class="donut-inner-text" x="47%" y="35%" dominant-baseline="middle" text-anchor="middle" fill="#b2b0bf" font-family="Montserrat" font-size="3">Total</text>
+                    <text class="donut-inner-text" x="47%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#b2b0bf" font-family="Montserrat" font-size="4">@DonutData.Sum().ToString()</text>
                 </CustomGraphics>
             </MudChart>
-            @*            <MudButton @onclick="RandomizeData">Randomize Data</MudButton>*@
         </MudPaper>
     </MudItem>
+    <MudItem xs="12" sm="8">
+        <MudPaper Class="pa-4" Style="height:420px;">
+            <MudChart ChartType="ChartType.Line" ChartSeries="@_series" XAxisLabels="@_xAxisLabels" Width="100%" Height="350px"></MudChart>
+        </MudPaper>
+    </MudItem>
+
     <MudItem xs="12" sm="12" md="6">
         <MudCard Style="height:100%;">
             <MudCardHeader>
                 <CardHeaderContent>
-                    <MudText Typo="Typo.h6">Earning Report</MudText>
+                    <MudText Typo="Typo.h6">Expiring Memberships</MudText>
                 </CardHeaderContent>
             </MudCardHeader>
             <MudCardContent Class="px-0">
                 <MudSimpleTable Elevation="0" Hover="true">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Priority</th>
-                            <th>Earnings</th>
+                            <th>Member</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var report in earningReports.OrderBy(x => x.Name))
+                        @foreach (var member in ExpiringMemberships)
                         {
                             <tr>
                                 <td>
-                                    <div class="d-flex flex-row">
-                                        <MudAvatar Image="@report.Avatar" Class="mud-elevation-25" />
-                                        <div class="ml-6">
-                                            <MudText Typo="Typo.subtitle2">@report.Name</MudText>
-                                            <MudText Typo="Typo.body2">@report.Title</MudText>
-                                        </div>
-                                    </div>
+                                    @*<div class="d-flex flex-row">*@
+                                    @*<MudIcon Icon="@Icons.Filled.Person" />*@
+                                    @*<MudAvatar Image="" Class="mud-elevation-25" />*@
+                                    @*<div class="ml-6">*@
+                                    <MudText>@member.FullName</MudText>
+                                    @*<MudText Typo="Typo.body2">@member.PhoneNumber</MudText>*@
+                                    @*</div>*@
+                                    @*</div>*@
                                 </td>
-                                <td><MudChip Label="true" Color="@report.Severity" Size="Size.Small" Class="ml-auto mud-elevation-25">@report.SeverityTitle</MudChip></td>
-                                <td><MudText>@report.Salary</MudText></td>
+                                <td>
+                                    <MudText>
+                                        @member.Membership!.StartDate.ToShortDateString()
+                                    </MudText>
+                                </td>
+                                <td>
+                                    <MudText>
+                                        @member.Membership!.EndDate.ToShortDateString()
+                                    </MudText>
+                                </td>
                             </tr>
                         }
                     </tbody>
@@ -97,97 +108,36 @@
         <MudCard Style="height:100%;">
             <MudCardHeader>
                 <CardHeaderContent>
-                    <MudText Typo="Typo.h6">Recent incidents</MudText>
+                    <MudText Typo="Typo.h6">Recent Birthdays</MudText>
                 </CardHeaderContent>
             </MudCardHeader>
             <MudCardContent Class="px-0">
-                <MudList Clickable="true">
-                    <MudListItem>
-                        <div class="d-flex flex-row">
-                            <MudAvatar Class="mud-elevation-25">
-                                <MudIcon Icon="@Icons.Custom.Brands.GitHub" Class="mx-4" />
-                            </MudAvatar>
-                            <div class="ml-6">
-                                <MudText Typo="Typo.subtitle2">Issues rising</MudText>
-                                <MudText Typo="Typo.body2">Issues is almost reaching 100</MudText>
+                @foreach (var member in MembersWithRecentBirthday)
+                {
+                    var today = DateTime.Today.Day;
+                    var message = "has a Birthday today.";
+                    var daysToBirthday = today - member.BirthDate!.Value.Day;
+                    var dayOrDays = daysToBirthday > 1 ? "days" : "day";
+
+                    if (daysToBirthday > 0)
+                        message = $"has a Birthday in {daysToBirthday} {dayOrDays}.";
+
+                    <MudList Clickable="true">
+                        <MudListItem>
+                            <div class="d-flex flex-row">
+                                <MudAvatar Class="mud-elevation-25">
+                                    <MudIcon Icon="@Icons.Filled.Cake" Class="mx-4" />
+                                </MudAvatar>
+                                <div class="ml-6">
+                                    <MudText Typo="Typo.subtitle2">@member.FullName</MudText>
+                                    <MudText Typo="Typo.body2">@message</MudText>
+                                </div>
+                                <MudChip Label="true" Color="Color.Success" Size="Size.Small" Class="ml-auto mud-elevation-25">@member.BirthDate.Value.ToShortDateString()</MudChip>
                             </div>
-                            <MudChip Label="true" Color="Color.Error" Size="Size.Small" Class="ml-auto mud-elevation-25">Danger</MudChip>
-                        </div>
-                    </MudListItem>
-                    <MudListItem>
-                        <div class="d-flex flex-row">
-                            <MudAvatar Class="mud-elevation-25">
-                                <MudIcon Icon="@Icons.Custom.Uncategorized.Radioactive" Class="mx-4" />
-                            </MudAvatar>
-                            <div class="ml-6">
-                                <MudText Typo="Typo.subtitle2">Incident in plant number 4</MudText>
-                                <MudText Typo="Typo.body2">Fire in reactor core</MudText>
-                            </div>
-                            <MudChip Label="true" Color="Color.Info" Size="Size.Small" Class="ml-auto mud-elevation-25">Minor</MudChip>
-                        </div>
-                    </MudListItem>
-                    <MudListItem>
-                        <div class="d-flex flex-row">
-                            <MudAvatar Class="mud-elevation-25">
-                                <MudIcon Icon="@Icons.Material.Filled.Person" Class="mx-4" />
-                            </MudAvatar>
-                            <div class="ml-6">
-                                <MudText Typo="Typo.subtitle2">Occupational injury</MudText>
-                                <MudText Typo="Typo.body2">Employee broke a finger while writing some code</MudText>
-                            </div>
-                            <MudChip Label="true" Color="Color.Success" Size="Size.Small" Class="ml-auto mud-elevation-25">Dismissed</MudChip>
-                        </div>
-                    </MudListItem>
-                </MudList>
+                        </MudListItem>
+                    </MudList>
+                }
             </MudCardContent>
         </MudCard>
     </MudItem>
 </MudGrid>
-
-@code {
-    public double[] data = { 25, 77, 28, 5 };
-    public string[] labels = { "Oil", "Coal", "Gas", "Biomass" };
-
-    //private int Index = -1; //default value cannot be 0 -> first selectedindex is 0.
-
-    public List<ChartSeries> Series = new List<ChartSeries>()
-    {
-        new ChartSeries() { Name = "Series 1", Data = new double[] { 90, 79, 72, 69, 62, 62, 55, 65, 70 } },
-        new ChartSeries() { Name = "Series 2", Data = new double[] { 10, 41, 35, 51, 49, 62, 69, 91, 148 } },
-    };
-    public string[] XAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep" };
-
-    Random random = new Random();
-    public void RandomizeData()
-    {
-        var new_series = new List<ChartSeries>()
-        {
-            new ChartSeries() { Name = "Series 1", Data = new double[9] },
-            new ChartSeries() { Name = "Series 2", Data = new double[9] },
-        };
-        for (int i = 0; i < 9; i++)
-        {
-            new_series[0].Data[i] = random.NextDouble() * 100;
-            new_series[1].Data[i] = random.NextDouble() * 100;
-        }
-        Series = new_series;
-        StateHasChanged();
-    }
-
-    EarningReport[] earningReports = new EarningReport[]
-                            {
-        new EarningReport { Name = "Lunees", Title = "Reactor Engineer", Avatar = "https://avatars2.githubusercontent.com/u/71094850?s=460&u=66c16f5bb7d27dc751f6759a82a3a070c8c7fe4b&v=4", Salary = "$0.99", Severity = Color.Success, SeverityTitle = "Low"},
-        new EarningReport { Name = "Mikes-gh", Title = "Developer", Avatar = "https://avatars.githubusercontent.com/u/16208742?s=120&v=4", Salary = "$19.12K", Severity = Color.Secondary, SeverityTitle = "Medium"},
-        new EarningReport { Name = "Garderoben", Title = "CSS Magician", Avatar = "https://avatars2.githubusercontent.com/u/10367109?s=460&amp;u=2abf95f9e01132e8e2915def42895ffe99c5d2c6&amp;v=4", Salary = "$1337", Severity = Color.Primary, SeverityTitle = "High"},
-                            };
-
-    class EarningReport
-    {
-        public string Avatar;
-        public string Name;
-        public string Title;
-        public Color Severity;
-        public string SeverityTitle;
-        public string Salary;
-    }
-}
