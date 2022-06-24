@@ -17,6 +17,8 @@ namespace ClubManagementSystem.Data
 
         public DbSet<MembershipHistory> MembershipHistories => Set<MembershipHistory>();
 
+        public DbSet<Transaction> Transactions => Set<Transaction>();
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
