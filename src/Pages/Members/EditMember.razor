@@ -21,8 +21,6 @@
 
 @code {
     private MudForm _form = null!;
-    private bool _showMembershipDetails = false;
-    private DateRange _membershipPeriod = new DateRange(DateTime.Now, DateTime.Now.AddMonths(1));
 
     [CascadingParameter]
     private MudDialogInstance _mudDialog { get; set; } = null!;
