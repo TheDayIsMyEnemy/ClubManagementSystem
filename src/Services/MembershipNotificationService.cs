@@ -40,29 +40,14 @@ namespace ClubManagementSystem.Services
                     var today = DateTime.Today;
                     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                     var memberships = context.Memberships.Include(m => m.Member).ToList();
-                    var history = new List<MembershipHistory>();
 
                     foreach (var membership in memberships)
                     {
                         if (membership.EndDate.Date == today.Date)
                         {
-                            history.Add(new MembershipHistory
-                            {
-                                MemberId = membership.MemberId,
-                                StartDate = membership.StartDate,
-                                EndDate = membership.EndDate,
-                                Fee = membership.Fee
-                            });
+                            // Send sms to this member
                         }
                     }
-
-                    if (history.Any())
-                    {
-                        context.MembershipHistories.AddRange(history);
-                        context.SaveChanges();
-                    }
-
-                    // Send a sms for each membership
                 }
             }
             catch (Exception e)

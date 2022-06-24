@@ -10,6 +10,8 @@ namespace ClubManagementSystem.Interfaces
 
         Task<bool> UpdateMember(Member member);
 
+        Task<bool> RenewMembership(Member member, Membership newMembership);
+
         Task<bool> DeleteMember(Member member);
     }
 }

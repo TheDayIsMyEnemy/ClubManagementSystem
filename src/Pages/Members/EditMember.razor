@@ -1,38 +1,12 @@
 ﻿<MudDialog ClassActions="ma-4">
     <DialogContent>
         <MudForm @ref="_form" Class="px-2">
-            <MudStack Row="true">
-                <MudDatePicker Label="Birth Date"
-                               @bind-Date="Member.BirthDate"
-                               DisableToolbar="true" />
-                <MudTextField T="string"
-                              Label="Phone No."
-                              @bind-Value="Member.PhoneNumber" />
-            </MudStack>
-            <MudSwitch T="bool"
-                       Checked="_showMembershipDetails"
-                       CheckedChanged="OnMembershipDetailsChecked"
-                       Color="Color.Primary"
-                       Class="ml-2 my-4">
-                Enable Membership
-            </MudSwitch>
-            <div style="@(_showMembershipDetails ? "" : "display: none;")">
-                <MudStack>
-                    <MudNumericField T="double"
-                                     Value="Member.Membership != null ? Member.Membership.Fee : 0"
-                                     ValueChanged="OnMembershipFeeChanged"
-                                     Label="Fee"
-                                     Variant="Variant.Text"
-                                     Min="20.0"
-                                     Max="500.0"
-                                     Style="width: 185px" />
-                    <MudDateRangePicker Label="Period Range"
-                                        DateRange="_membershipPeriod"
-                                        DateRangeChanged="OnMembershipPeriodChanged"
-                                        PickerVariant="PickerVariant.Dialog"
-                                        DisableToolbar="true" />
-                </MudStack>
-            </div>
+            <MudDatePicker Label="Birth Date"
+                           @bind-Date="Member.BirthDate"
+                           DisableToolbar="true" />
+            <MudTextField T="string"
+                          Label="Phone No."
+                          @bind-Value="Member.PhoneNumber" />
         </MudForm>
     </DialogContent>
     <DialogActions>
@@ -56,15 +30,6 @@
     [Parameter]
     public Member Member { get; set; } = null!;
 
-    protected override void OnParametersSet()
-    {
-        if (Member.Membership != null)
-        {
-            _showMembershipDetails = true;
-            _membershipPeriod = new DateRange(Member.Membership.StartDate, Member.Membership.EndDate);
-        }
-    }
-
     private async Task Submit()
     {
         await _form.Validate();
@@ -72,37 +37,6 @@
         {
             _mudDialog.Close(DialogResult.Ok(Member));
         }
-    }
-
-    private void OnMembershipDetailsChecked(bool value)
-    {
-        _showMembershipDetails = value;
-        if (_showMembershipDetails)
-        {
-            Member.Membership = new Membership
-                {
-                    Fee = 20,
-                    StartDate = _membershipPeriod.Start!.Value,
-                    EndDate = _membershipPeriod.End!.Value
-                };
-        }
-        else
-        {
-            Member.Membership = null;
-        }
-    }
-
-    private void OnMembershipFeeChanged(double value)
-    {
-        if (Member.Membership != null)
-            Member.Membership.Fee = value;
-    }
-
-    private void OnMembershipPeriodChanged(DateRange membershipPeriod)
-    {
-        _membershipPeriod = membershipPeriod;
-        Member.Membership!.StartDate = membershipPeriod.Start!.Value;
-        Member.Membership!.EndDate = membershipPeriod.End!.Value;
     }
 
     private void Cancel() => _mudDialog.Cancel();

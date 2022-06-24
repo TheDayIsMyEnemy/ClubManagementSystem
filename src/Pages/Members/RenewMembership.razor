@@ -1,0 +1,73 @@
+﻿<MudDialog ClassActions="ma-4">
+    <DialogContent>
+        <MudForm @ref="_form" Class="px-2">
+            <MudNumericField T="double"
+                             @bind-Value="_membership.Fee"
+                             Label="Fee"
+                             Variant="Variant.Text"
+                             Min="20.0"
+                             Max="500.0"
+                             Style="width: 185px" />
+            <MudDateRangePicker Label="Period Range"
+                                DateRange="_membershipPeriod"
+                                DateRangeChanged="OnMembershipPeriodChanged"
+                                PickerVariant="PickerVariant.Dialog"
+                                DisableToolbar="true" />
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Secondary" Variant="Variant.Filled" Size="Size.Small" OnClick="Cancel">
+            Cancel
+        </MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small" OnClick="Submit">
+            Submit
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private MudForm _form = null!;
+    private DateRange _membershipPeriod = new DateRange(DateTime.Now, DateTime.Now.AddMonths(1));
+    private Membership _membership = new();
+
+    [CascadingParameter]
+    private MudDialogInstance _mudDialog { get; set; } = null!;
+
+    [Parameter]
+    public Member Member { get; set; } = null!;
+
+    protected override void OnParametersSet()
+    {
+        if (Member.Membership != null && Member.Membership.IsActive)
+        {
+            _membershipPeriod = new DateRange(Member.Membership.StartDate, Member.Membership.EndDate);
+            _membership.StartDate = Member.Membership.StartDate;
+            _membership.EndDate = Member.Membership.EndDate;
+            _membership.Fee = Member.Membership.Fee;
+        }
+        else
+        {
+            _membership.StartDate = _membershipPeriod.Start!.Value;
+            _membership.EndDate = _membershipPeriod.End!.Value;
+            _membership.Fee = 20;
+        }
+    }
+
+    private async Task Submit()
+    {
+        await _form.Validate();
+        if (_form.IsValid)
+        {
+            _mudDialog.Close(DialogResult.Ok(_membership));
+        }
+    }
+
+    private void OnMembershipPeriodChanged(DateRange membershipPeriod)
+    {
+        _membershipPeriod = membershipPeriod;
+        _membership.StartDate = membershipPeriod.Start!.Value;
+        _membership.EndDate = membershipPeriod.End!.Value;
+    }
+
+    private void Cancel() => _mudDialog.Cancel();
+}

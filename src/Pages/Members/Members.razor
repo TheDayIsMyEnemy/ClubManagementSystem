@@ -47,6 +47,13 @@
         </MudTd>
         <MudTd DataLabel="Actions">
             <MudStack Row="true">
+                <MudTooltip Placement="Placement.Top" Text="Renew Membership">
+                    <MudIconButton Icon="@Icons.Filled.CardMembership"
+                                   Color="Color.Primary"
+                                   Size="Size.Small"
+                                   OnClick="(e) => RenewMembership(context)">
+                    </MudIconButton>
+                </MudTooltip>
                 <MudTooltip Placement="Placement.Top" Text="Edit">
                     <MudIconButton Icon="@Icons.Filled.Edit"
                                    Color="Color.Primary"

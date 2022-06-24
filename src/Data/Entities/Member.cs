@@ -20,6 +20,8 @@
 
         public ICollection<Group> Groups { get; set; } = null!;
 
+        public ICollection<Transaction> Transactions { get; set; } = null!;
+
         public ICollection<MembershipHistory> MembershipHistory { get; set; } = null!;
     }
 }

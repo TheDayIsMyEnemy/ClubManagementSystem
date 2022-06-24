@@ -10,8 +10,8 @@
 
         public double Fee { get; set; }
 
-        public int? MemberId { get; set; }
+        public int MemberId { get; set; }
 
-        public Member? Member { get; set; }
+        public Member Member { get; set; } = null!;
     }
 }

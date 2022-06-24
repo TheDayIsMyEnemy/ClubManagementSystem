@@ -34,7 +34,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
 builder.Services.AddHttpClient();
 
-builder.Services.AddHostedService<MembershipNotificationService>();
+//builder.Services.AddHostedService<MembershipNotificationService>();
 
 builder.Services.AddTransient<IMemberService, MemberService>();
 builder.Services.AddTransient<IMembershipService, MembershipService>();

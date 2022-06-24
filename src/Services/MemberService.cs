@@ -44,6 +44,41 @@ namespace ClubManagementSystem.Services
             return true;
         }
 
+        public async Task<bool> RenewMembership(Member member, Membership newMembership)
+        {
+            try
+            {
+                if (member.Membership == null)
+                {
+                    member.Membership = newMembership;
+                }
+                else
+                {
+                    var isMembershipExpired = !member.Membership.IsActive;
+                    if (isMembershipExpired)
+                    {
+                        var membershipHistory = new MembershipHistory
+                        {
+                            Member = member,
+                            StartDate = member.Membership.StartDate,
+                            EndDate = member.Membership.EndDate,
+                            Fee = member.Membership.Fee
+                        };
+                        await _context.MembershipHistories.AddAsync(membershipHistory);
+                    }
+
+                    member.Membership.StartDate = newMembership.StartDate;
+                    member.Membership.EndDate = newMembership.EndDate;
+                    member.Membership.Fee = newMembership.Fee;
+                }
+
+                _context.Members.Update(member);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception) { return false; }
+            return true;
+        }
+
         public async Task<bool> DeleteMember(Member member)
         {
             try

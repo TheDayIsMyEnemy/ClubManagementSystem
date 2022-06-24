@@ -84,6 +84,24 @@ namespace ClubManagementSystem.Pages.Members
             }
         }
 
+        protected async Task RenewMembership(Member member)
+        {
+            var dialogParams = new DialogParameters { ["Member"] = member };
+            var result = await _dialogService.Show<RenewMembership>("Renew Membership", dialogParams).Result;
+
+            if (!result.Cancelled)
+            {
+                var newMembership = (Membership)result.Data;
+                var isUpdated = await _memberService.RenewMembership(member, newMembership);
+                if (isUpdated)
+                {
+                    _snackbar.Add(string.Format(Messages.SuccessfulUpdateFormat, member.FullName),
+                        Severity.Success);
+                }
+                else { _snackbar.Add(Messages.Error, Severity.Error); }
+            }
+        }
+
         protected async Task DeleteMember(Member member)
         {
             var dialogParams = new DialogParameters
