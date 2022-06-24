@@ -13,10 +13,10 @@ namespace ClubManagementSystem.Pages.Dashboard
 
         protected double[] DonutData = new double[2];
         protected string[] DonutLabels = { "Active", "Expired" };
-        protected double TotalIncome = 0;
+        protected double TotalIncome { get; set; }
+        protected double NewMembersCount { get; set; }
         protected List<Member> MembersWithRecentBirthday { get; set; } = new();
         protected List<Member> ExpiringMemberships { get; set; } = new();
-        protected List<Member> NewMembers { get; set; } = new();
         protected List<ChartSeries> _series = new List<ChartSeries>()
         {
             new ChartSeries() { Name = "Series 1", Data = new double[] { 90, 79, 72, 69, 62, 62, 55, 65, 70 } },
@@ -69,6 +69,10 @@ namespace ClubManagementSystem.Pages.Dashboard
                     var daysLeft = (member.Membership.EndDate - today).Days;
                     if (daysLeft >= 0 & daysLeft <= 10)
                         ExpiringMemberships.Add(member);
+
+                    if (member.Created.Date.Year == today.Year
+                        && member.Created.Date.Month == today.Month)
+                        NewMembersCount++;
                 }
 
                 if (member.BirthDate != null
