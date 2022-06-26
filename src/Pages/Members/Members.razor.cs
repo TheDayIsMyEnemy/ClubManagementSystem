@@ -1,7 +1,9 @@
 ﻿using ClubManagementSystem.Data.Entities;
 using ClubManagementSystem.Interfaces;
+using ClubManagementSystem.Resources;
 using ClubManagementSystem.Shared;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using MudBlazor;
 
 namespace ClubManagementSystem.Pages.Members
@@ -16,6 +18,9 @@ namespace ClubManagementSystem.Pages.Members
 
         [Inject]
         private ISnackbar _snackbar { get; set; } = null!;
+
+        [Inject]
+        protected IStringLocalizer<Common> Localizer { get; set; } = null!;
 
         protected List<Member> Members { get; set; } = new();
         protected string? SearchQuery { get; set; }

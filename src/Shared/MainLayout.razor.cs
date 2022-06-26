@@ -1,9 +1,11 @@
 ﻿using ClubManagementSystem.Data.Entities;
 using ClubManagementSystem.Extensions;
+using ClubManagementSystem.Resources;
 using ClubManagementSystem.Theme;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using MudBlazor;
 
 namespace ClubManagementSystem.Shared
@@ -23,6 +25,9 @@ namespace ClubManagementSystem.Shared
 
         [Inject]
         protected UserManager<User> UserManager { get; set; } = null!;
+
+        [Inject]
+        protected IStringLocalizer<Common> Localizer { get; set; } = null!;
 
         protected void DrawerToggle()
          => IsDrawerOpened = !IsDrawerOpened;

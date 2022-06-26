@@ -33,6 +33,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
 builder.Services.AddHttpClient();
+builder.Services.AddLocalization();
 
 //builder.Services.AddHostedService<MembershipNotificationService>();
 
@@ -59,6 +60,13 @@ app.UseRouting();
 
 app.UseAuthentication();;
 app.UseAuthorization();
+
+var supportedCultures = new[] { "en-US", "bg-BG" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+app.UseRequestLocalization(localizationOptions);
 
 app.MapControllers();
 app.MapBlazorHub();

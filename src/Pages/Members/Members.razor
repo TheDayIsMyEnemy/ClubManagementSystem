@@ -1,7 +1,7 @@
 ﻿@page "/members"
 @inherits MembersBase
 
-<PageTitle>Members</PageTitle>
+<PageTitle>@Localizer["Members"]</PageTitle>
 
 <MudTable Items="Members"
           Hover="true"
@@ -15,19 +15,19 @@
                 OnClick="CreateMember" />
         <MudSpacer />
         <MudTextField @bind-Value="SearchQuery"
-                      Placeholder="Search"
+                      Placeholder="@Localizer["Search"]"
                       Adornment="Adornment.Start"
                       AdornmentIcon="@Icons.Material.Filled.Search"
                       IconSize="Size.Small"
                       Class="search-field mt-0" />
     </ToolBarContent>
     <HeaderContent>
-        <MudTh>First Name</MudTh>
-        <MudTh>Last Name</MudTh>
-        <MudTh>Birth Date</MudTh>
-        <MudTh>Phone No.</MudTh>
-        <MudTh>Status</MudTh>
-        <MudTh>Actions</MudTh>
+        <MudTh>@Localizer["First Name"]</MudTh>
+        <MudTh>@Localizer["Last Name"]</MudTh>
+        <MudTh>@Localizer["Birth Date"]</MudTh>
+        <MudTh>@Localizer["Phone No."]</MudTh>
+        <MudTh>@Localizer["Status"]</MudTh>
+        <MudTh>@Localizer["Actions"]</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="First Name">@context.FirstName</MudTd>

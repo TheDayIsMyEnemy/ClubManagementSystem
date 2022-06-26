@@ -8,6 +8,7 @@
     <MudAppBar Elevation="1">
         <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
+        <CultureSelector />
         <MudIconButton Icon="@(IsDarkMode ? @Icons.Filled.WbSunny : @Icons.Filled.Brightness4)" Color="Color.Inherit" OnClick="DarkModeToggle" />
         <MudMenu Direction="Direction.Left" OffsetX="true" Dense="true" Class="mt-1 ml-4">
             <ActivatorContent>
@@ -23,7 +24,7 @@
                     <div class="d-flex align-center">
                         <MudIconButton ButtonType="ButtonType.Submit"
                                        Icon="@Icons.Material.Outlined.Login" />
-                        <span class="ml-2">Log Out</span>
+                        <span class="ml-2">@Localizer["Log Out"]</span>
                     </div>
                 </form>
             </ChildContent>

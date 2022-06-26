@@ -1,0 +1,40 @@
+﻿@using System.Globalization
+
+<MudMenu Icon="@Icons.Material.Outlined.Translate"
+         Color="Color.Inherit"
+         Direction="Direction.Bottom"
+         OffsetY="true"
+         Dense="true">
+    @foreach (var culture in _supportedCultures)
+    {
+        <MudMenuItem OnClick="(e) => SetCulture(culture)">
+            @culture.Parent.DisplayName
+        </MudMenuItem>
+    }
+</MudMenu>
+
+@code {
+    private CultureInfo[] _supportedCultures = new[]
+    {
+        new CultureInfo("en-US"),
+        new CultureInfo("bg-BG"),
+    };
+
+    [Inject]
+    private NavigationManager _navigationManager { get; set; } = null!;
+
+    private void SetCulture(CultureInfo culture)
+    {
+        if (CultureInfo.CurrentCulture.Name != culture.Name)
+        {
+            var uri = new Uri(_navigationManager.Uri)
+                .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+            var cultureEscaped = Uri.EscapeDataString(culture.Name);
+            var uriEscaped = Uri.EscapeDataString(uri);
+
+            _navigationManager.NavigateTo(
+                $"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}",
+                forceLoad: true);
+        }
+    }
+}
