@@ -15,17 +15,17 @@
                 OnClick="CreateUser" />
         <MudSpacer />
         <MudTextField @bind-Value="SearchQuery"
-                      Placeholder="Search"
+                      Placeholder="@Localizer["Search"]"
                       Adornment="Adornment.Start"
                       AdornmentIcon="@Icons.Material.Filled.Search"
                       IconSize="Size.Small"
                       Class="search-field mt-0" />
     </ToolBarContent>
     <HeaderContent>
-        <MudTh>First Name</MudTh>
-        <MudTh>Last Name</MudTh>
-        <MudTh>Email</MudTh>
-        <MudTh>Actions</MudTh>
+        <MudTh>@Localizer["First Name"]</MudTh>
+        <MudTh>@Localizer["Last Name"]</MudTh>
+        <MudTh>@Localizer["Email Address"]</MudTh>
+        <MudTh>@Localizer["Actions"]</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="First Name">@context.FirstName</MudTd>

@@ -77,7 +77,7 @@ namespace ClubManagementSystem.Pages.Dashboard
 
                 if (member.BirthDate != null
                     && member.BirthDate.Value.Date.Month == today.Month
-                    && member.BirthDate.Value.Date.Day <= today.Date.Day)
+                    && member.BirthDate.Value.Date.Day >= today.Date.Day)
                 {
                     MembersWithRecentBirthday.Add(member);
                 }

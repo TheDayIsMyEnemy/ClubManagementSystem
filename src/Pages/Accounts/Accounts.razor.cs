@@ -1,8 +1,10 @@
 ﻿using ClubManagementSystem.Data.Entities;
+using ClubManagementSystem.Resources;
 using ClubManagementSystem.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using MudBlazor;
 using static ClubManagementSystem.Areas.Identity.Pages.Account.RegisterModel;
 
@@ -18,6 +20,9 @@ namespace ClubManagementSystem.Pages.Accounts
 
         [Inject]
         private ISnackbar _snackbar { get; set; } = null!;
+
+        [Inject]
+        protected IStringLocalizer<Common> Localizer { get; set; } = null!;
 
         protected List<User> Users { get; set; } = new();
         protected string? SearchQuery { get; set; }

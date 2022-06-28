@@ -31,14 +31,14 @@
             </div>
         </MudPaper>
     </MudItem>
-@*    <MudItem xs="12" sm="6" md="3">
-        <MudPaper Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-            <MudIcon Icon="@Icons.Custom.Uncategorized.Radioactive" Color="Color.Warning" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
-            <div>
-                <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Roentgen</MudText>
-                <MudText Typo="Typo.h5">3,6</MudText>
-            </div>
-        </MudPaper>
+    @*    <MudItem xs="12" sm="6" md="3">
+    <MudPaper Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+    <MudIcon Icon="@Icons.Custom.Uncategorized.Radioactive" Color="Color.Warning" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+    <div>
+    <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Roentgen</MudText>
+    <MudText Typo="Typo.h5">3,6</MudText>
+    </div>
+    </MudPaper>
     </MudItem>*@
     <MudItem xs="12" sm="4">
         <MudPaper Class="pa-2">
@@ -116,11 +116,13 @@
                 {
                     var today = DateTime.Today.Day;
                     var message = "has a Birthday today.";
-                    var daysToBirthday = today - member.BirthDate!.Value.Day;
-                    var dayOrDays = daysToBirthday > 1 ? "days" : "day";
+                    var daysToBirthday = member.BirthDate!.Value.Day - today;
 
                     if (daysToBirthday > 0)
+                    {
+                        var dayOrDays = daysToBirthday > 1 ? "days" : "day";
                         message = $"has a Birthday in {daysToBirthday} {dayOrDays}.";
+                    }
 
                     <MudList Clickable="true">
                         <MudListItem>
